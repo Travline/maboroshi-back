@@ -1,0 +1,52 @@
+{
+  "name": "maboroshi-back",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "dev": "tsx watch src/app.ts",
+    "lint": "ts-standard",
+    "build": "tsc && tsc-esm-fix",
+    "start": "node build/app.js",
+    "tsc": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Travline/maboroshi-back.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/Travline/maboroshi-back/issues"
+  },
+  "homepage": "https://github.com/Travline/maboroshi-back#readme",
+  "devDependencies": {
+    "@types/cookie-parser": "1.4.10",
+    "@types/cors": "^2.8.19",
+    "@types/express": "5.0.5",
+    "@types/uuid": "^10.0.0",
+    "ts-standard": "12.0.2",
+    "tsc-esm-fix": "3.1.2",
+    "tsx": "4.20.6",
+    "typescript": "5.9.3"
+  },
+  "dependencies": {
+    "@libsql/client": "0.15.15",
+    "cookie-parser": "1.4.7",
+    "cors": "2.8.5",
+    "dotenv": "17.2.3",
+    "express": "5.1.0",
+    "uuid": "^13.0.0"
+  },
+  "eslintConfig": {
+    "parserOptions": {
+      "project": "./tsconfig.json"
+    },
+    "extends": [
+      "./node_modules/ts-standard/eslintrc.json"
+    ]
+  }
+}
