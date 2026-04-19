@@ -1,9 +1,10 @@
 import { v7 as uuidv7 } from 'uuid'
+import { UserMail } from './UserMail'
 
 export class User {
   constructor (
     private readonly username: string,
-    private readonly mail: string, // Queda pendiente pasarlo a un Value Object
+    private readonly mail: UserMail, // Queda pendiente pasarlo a un Value Object
     private readonly pwd: string,
     private readonly phone: number,
     private readonly id: string = uuidv7(),
@@ -18,7 +19,7 @@ export class User {
     return {
       id: this.id,
       username: this.username,
-      mail: this.mail,
+      mail: this.mail.toString(),
       phone: this.phone
     }
   }
