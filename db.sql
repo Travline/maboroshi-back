@@ -4,7 +4,7 @@ PRAGMA foreign_keys = ON;
 -- 1. Tabla de Usuarios
 CREATE TABLE users (
     id TEXT PRIMARY KEY, -- UUID
-    name TEXT NOT NULL,
+    username TEXT NOT NULL,
     mail TEXT NOT NULL UNIQUE,
     pwd TEXT NOT NULL,
     phone INTEGER,
@@ -14,13 +14,13 @@ CREATE TABLE users (
 -- 2. Tabla de Géneros
 CREATE TABLE genres (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL UNIQUE
+    genre_name TEXT NOT NULL UNIQUE
 );
 
 -- 3. Tabla de Productos
 CREATE TABLE products (
     id TEXT PRIMARY KEY, -- UUID
-    name TEXT NOT NULL,
+    product_name TEXT NOT NULL,
     artist TEXT NOT NULL,
     real_price DECIMAL(10, 2) NOT NULL,
     sale_price DECIMAL(10, 2),
