@@ -1,53 +1,35 @@
-# Node.js
-node_modules/
-npm-debug.log
-yarn-error.log
-package-lock.json
-yarn.lock
+HELP.md
+target/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
 
-# TypeScript
-dist/
-*.tsbuildinfo
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
 
-# Logs
-*.log
-logs/
-*.log.*
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
 
-# Entorno
-.env
-.env.local
-.env.*.local
-
-# Compilado de TypeScript
-*.tsbuildinfo
-
-# Dependencias de editor
-.vscode/
-.idea/
-
-# Coverage de tests
-coverage/
-
-# Archivos de configuración de IDEs
-*.sublime-workspace
-*.sublime-project
-
-# Directorios de build
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
 build/
+!**/src/main/**/build/
+!**/src/test/**/build/
 
-# Archivos de configuración local
-*.local
+### VS Code ###
+.vscode/
 
-# Mac OS
-.DS_Store
-
-# Windows
-Thumbs.db
-
-# Archivos generados por herramientas de documentación
-*.apidoc/
-
-# Archivos de base de datos locales (si aplicable)
-*.db
-*.sqlite
+.env
