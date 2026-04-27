@@ -1,9 +1,9 @@
 package com_maboroshi.maboroshi_spring.contexts.identity.domain;
 
-import java.util.Optional;
+import com_maboroshi.maboroshi_spring.shared.core.Result;
 
 public interface PasswordHasher {
-  public Optional<String> hash(String pwd);
+  public Result<String, ServiceError> hash(String pwd);
 
-  public Boolean compare(String plain, String hash);
+  public Result<Boolean, ServiceError> compare(String plain, String hash);
 }

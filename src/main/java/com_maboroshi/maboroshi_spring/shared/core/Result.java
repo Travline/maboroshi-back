@@ -1,5 +1,7 @@
 package com_maboroshi.maboroshi_spring.shared.core;
 
+import java.util.function.Function;
+
 public class Result<T, E> {
   public boolean isSucces;
   private T value;
@@ -19,17 +21,21 @@ public class Result<T, E> {
     return new Result<>(false, null, error);
   }
 
-  public T getValue() throws Exception {
+  public T getValue() {
     if (!this.isSucces) {
-      throw new Exception("Invalid operation: Cannot get this value, the result is error");
+      return null;
     }
     return this.value;
   }
 
-  public E getErrorValue() throws Exception {
+  public E getErrorValue() {
     if (this.isSucces) {
-      throw new Exception("Invalid operation: Cannot get this value, the result is succesful");
+      return null;
     }
     return this.error;
+  }
+
+  public <R> R match(Function<T, R> onSucces, Function<E, R> onFailure) {
+    return this.isSucces ? onSucces.apply(this.value) : onFailure.apply(this.error);
   }
 }
