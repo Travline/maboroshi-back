@@ -21,20 +21,20 @@ public class RegisterUserUseCase {
   }
 
   public Result<User, RegisterError> execute(RegisterUserRequest userData) {
-    if (userData.pwd().trim().length() < 8) {
+    UserMail mailValidated;
+    try {
+      mailValidated = new UserMail(userData.mail());
+    } catch (InvalidMailException ime) {
+      appLogger.warn("Register Error: Mail '" + userData.mail() + "' is invalid");
+      return Result.fail(new InvalidMailFormat("Mail format is invalid"));
+    }
+
+    if (userData.pwd() == null || userData.pwd().trim().length() < 8) {
       appLogger.warn("Register Error: Password too short");
       return Result.fail(new PasswordTooWeak("Password too short"));
     }
 
-    UserMail mailValidated;
-    try {
-      mailValidated = new UserMail(userData.mail().trim());
-    } catch (InvalidMailException ime) {
-      appLogger.warn("Register Error: Mail '" + userData.mail().trim() + "' is invalid");
-      return Result.fail(new InvalidMailFormat("Mail format is invalid"));
-    }
-
-    var hashResult = passwordHasher.hash(userData.pwd().trim());
+    var hashResult = passwordHasher.hash(userData.pwd());
     if (!hashResult.isSucces) {
       appLogger.warn("Register Error: Password value is invalid");
       return Result.fail(new UnprocessablePassword("Password value is invalid"));

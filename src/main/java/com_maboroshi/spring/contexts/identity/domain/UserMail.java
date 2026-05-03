@@ -12,11 +12,11 @@ public class UserMail {
     if (!isValid(mail)) {
       throw new InvalidMailException("Invalid mail value");
     }
-    this.mail = mail;
+    this.mail = mail.trim();
   }
 
   private boolean isValid(String mail) {
-    if (mail == null || !EMAIL_REGEX.matcher(mail).matches()) {
+    if (mail == null || !EMAIL_REGEX.matcher(mail.trim()).matches()) {
       return false;
     }
     return true;
