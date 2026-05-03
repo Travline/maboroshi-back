@@ -39,7 +39,7 @@ public class User {
     return pwd;
   }
 
-  public int getPhone() {
+  public String getPhone() {
     return phone;
   }
 
