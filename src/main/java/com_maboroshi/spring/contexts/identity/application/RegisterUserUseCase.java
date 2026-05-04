@@ -62,6 +62,7 @@ public class RegisterUserUseCase {
       return Result.fail(new CannotCreateUser("User cannot be created"));
     }
 
+    appLogger.info("User " + newUser.getUsername() + " registered successfully");
     return Result.ok(newUser);
   }
 }
