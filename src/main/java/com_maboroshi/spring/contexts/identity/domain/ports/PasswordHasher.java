@@ -1,4 +1,4 @@
-package com_maboroshi.spring.contexts.identity.domain;
+package com_maboroshi.spring.contexts.identity.domain.ports;
 
 import com_maboroshi.spring.shared.core.Result;
 import com_maboroshi.spring.shared.errors.ServiceError;

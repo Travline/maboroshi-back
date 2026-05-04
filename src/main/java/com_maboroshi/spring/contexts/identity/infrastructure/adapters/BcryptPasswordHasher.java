@@ -1,6 +1,6 @@
-package com_maboroshi.spring.contexts.identity.infrastructure;
+package com_maboroshi.spring.contexts.identity.infrastructure.adapters;
 
-import com_maboroshi.spring.contexts.identity.domain.PasswordHasher;
+import com_maboroshi.spring.contexts.identity.domain.ports.PasswordHasher;
 import com_maboroshi.spring.shared.core.Result;
 import com_maboroshi.spring.shared.errors.ServiceError;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

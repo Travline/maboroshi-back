@@ -1,4 +1,4 @@
-package com_maboroshi.spring.contexts.identity.domain;
+package com_maboroshi.spring.contexts.identity.domain.entities;
 
 import com_maboroshi.spring.contexts.identity.domain.errors.InvalidMailException;
 

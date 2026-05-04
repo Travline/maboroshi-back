@@ -1,14 +1,13 @@
-package com_maboroshi.spring.contexts.identity.infrastructure;
+package com_maboroshi.spring.shared.utils;
 
 import com.fasterxml.uuid.Generators;
 import com.fasterxml.uuid.NoArgGenerator;
-import com_maboroshi.spring.contexts.identity.domain.UserIdGenerator;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
 @Service
-public class UUIDGenerator implements UserIdGenerator {
+public class UuidV7Generator implements UuidGenerator {
   NoArgGenerator generator = Generators.timeBasedEpochGenerator();
 
   @Override

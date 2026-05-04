@@ -1,4 +1,4 @@
-package com_maboroshi.spring.contexts.identity.infrastructure;
+package com_maboroshi.spring.contexts.identity.infrastructure.adapters;
 
 import com_maboroshi.spring.shared.errors.ServiceError;
 

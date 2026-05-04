@@ -1,6 +1,6 @@
 package com_maboroshi.spring.shared.utils;
 
-import com_maboroshi.spring.contexts.identity.domain.User;
+import com_maboroshi.spring.contexts.identity.domain.entities.User;
 import com_maboroshi.spring.shared.errors.InvalidTokenException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;

@@ -1,6 +1,6 @@
 package com_maboroshi.spring.contexts.identity.application.dtos;
 
-import com_maboroshi.spring.contexts.identity.domain.User;
+import com_maboroshi.spring.contexts.identity.domain.entities.User;
 
 public class RegisterUserMapper {
   public static RegisterUserResponse toResponse(User user) {

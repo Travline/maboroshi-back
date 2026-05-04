@@ -1,22 +1,26 @@
-package com_maboroshi.spring.contexts.identity.application;
+package com_maboroshi.spring.contexts.identity.application.use_cases;
 
 import com_maboroshi.spring.contexts.identity.application.dtos.RegisterUserRequest;
 import com_maboroshi.spring.contexts.identity.application.errors.*;
-import com_maboroshi.spring.contexts.identity.domain.*;
+import com_maboroshi.spring.contexts.identity.domain.entities.User;
+import com_maboroshi.spring.contexts.identity.domain.entities.UserMail;
 import com_maboroshi.spring.contexts.identity.domain.errors.InvalidMailException;
+import com_maboroshi.spring.contexts.identity.domain.ports.PasswordHasher;
+import com_maboroshi.spring.contexts.identity.domain.ports.UserRepository;
 import com_maboroshi.spring.shared.core.Result;
 import com_maboroshi.spring.shared.utils.AppLogger;
+import com_maboroshi.spring.shared.utils.UuidGenerator;
 
 public class RegisterUserUseCase {
   private final UserRepository userRepository;
   private final PasswordHasher passwordHasher;
-  private final UserIdGenerator userIdGenerator;
+  private final UuidGenerator uuidGenerator;
   private final AppLogger appLogger;
 
-  public RegisterUserUseCase(UserRepository userRepository, PasswordHasher passwordHasher, UserIdGenerator userIdGenerator, AppLogger appLogger) {
+  public RegisterUserUseCase(UserRepository userRepository, PasswordHasher passwordHasher, UuidGenerator uuidGenerator, AppLogger appLogger) {
     this.userRepository = userRepository;
     this.passwordHasher = passwordHasher;
-    this.userIdGenerator = userIdGenerator;
+    this.uuidGenerator = uuidGenerator;
     this.appLogger = appLogger;
   }
 
@@ -47,7 +51,7 @@ public class RegisterUserUseCase {
     }
 
     User newUser = new User(
-            userIdGenerator.generateId(),
+            uuidGenerator.generateId(),
             userData.username(),
             mailValidated,
             hashResult.getValue(),

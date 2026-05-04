@@ -1,8 +1,8 @@
 package com_maboroshi.spring.contexts.identity.presentation;
 
-import com_maboroshi.spring.contexts.identity.application.RegisterUserUseCase;
 import com_maboroshi.spring.contexts.identity.application.dtos.RegisterUserMapper;
 import com_maboroshi.spring.contexts.identity.application.dtos.RegisterUserRequest;
+import com_maboroshi.spring.contexts.identity.application.use_cases.RegisterUserUseCase;
 import com_maboroshi.spring.shared.utils.SessionCookie;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
