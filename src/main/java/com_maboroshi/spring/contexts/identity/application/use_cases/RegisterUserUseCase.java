@@ -61,12 +61,11 @@ public class RegisterUserUseCase {
 
     var saveResult = userRepository.save(newUser);
     if (!saveResult.isSucces) {
-      // Queda a espera de obtener como valor de resultado erróneo una excepción
-      appLogger.error("Repository Error: User cannot be created", (Throwable) saveResult.getErrorValue());
+      appLogger.warn("Repository error: " + saveResult.getErrorValue());
       return Result.fail(new CannotCreateUser("User cannot be created"));
     }
-
     appLogger.info("User " + newUser.getUsername() + " registered successfully");
     return Result.ok(newUser);
+
   }
 }

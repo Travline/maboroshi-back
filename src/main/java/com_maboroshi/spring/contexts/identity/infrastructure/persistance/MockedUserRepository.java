@@ -3,6 +3,7 @@ package com_maboroshi.spring.contexts.identity.infrastructure.persistance;
 import com_maboroshi.spring.contexts.identity.domain.entities.User;
 import com_maboroshi.spring.contexts.identity.domain.entities.UserMail;
 import com_maboroshi.spring.contexts.identity.domain.ports.UserRepository;
+import com_maboroshi.spring.contexts.identity.infrastructure.errors.UserNotFound;
 import com_maboroshi.spring.shared.core.Result;
 import com_maboroshi.spring.shared.errors.RepositoryError;
 import org.springframework.stereotype.Repository;
@@ -18,15 +19,6 @@ public class MockedUserRepository implements UserRepository {
   public Result<User, RepositoryError> save(User newUser) {
     users.add(newUser);
     return Result.ok(newUser);
-  }
-
-  @Override
-  public Result<User, RepositoryError> findById(String userId) {
-    User userFound = users.stream().filter(user -> user.getId().toString().equals(userId)).findFirst().orElse(null);
-    if (userFound == null) {
-      return Result.fail(new UserNotFound("User not found by id"));
-    }
-    return Result.ok(userFound);
   }
 
   @Override
