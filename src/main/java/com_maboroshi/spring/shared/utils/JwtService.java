@@ -2,6 +2,7 @@ package com_maboroshi.spring.shared.utils;
 
 import com_maboroshi.spring.contexts.identity.domain.entities.User;
 import com_maboroshi.spring.shared.errors.InvalidTokenException;
+import io.github.cdimascio.dotenv.Dotenv;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -13,8 +14,8 @@ import java.util.UUID;
 
 @Service
 public class JwtService {
-
-  private final String SECRET_KEY = System.getenv("JWT_SECRET_KEY");
+  private final Dotenv dotenv = Dotenv.configure().load();
+  private final String SECRET_KEY = dotenv.get("JWT_SECRET_KEY");
   private final long EXPIRATION_TIME = 30 * 60 * 1000;
 
   private SecretKey getSigningKey() {

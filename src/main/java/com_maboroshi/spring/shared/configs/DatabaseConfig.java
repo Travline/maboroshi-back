@@ -2,6 +2,7 @@ package com_maboroshi.spring.shared.configs;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -13,10 +14,11 @@ public class DatabaseConfig {
   @Bean
   public DataSource dataSource() {
     HikariConfig config = new HikariConfig();
+    Dotenv dotenv = Dotenv.configure().load();
 
-    config.setJdbcUrl(System.getenv("SUPABASE_URL"));
-    config.setUsername(System.getenv("SUPABASE_USER"));
-    config.setPassword(System.getenv("SUPABASE_PASS"));
+    config.setJdbcUrl(dotenv.get("SUPABASE_URL"));
+    config.setUsername(dotenv.get("SUPABASE_USER"));
+    config.setPassword(dotenv.get("SUPABASE_PASS"));
     config.setDriverClassName("org.postgresql.Driver");
 
     config.setMaximumPoolSize(10);
