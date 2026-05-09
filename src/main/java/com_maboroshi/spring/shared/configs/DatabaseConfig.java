@@ -14,7 +14,7 @@ public class DatabaseConfig {
   @Bean
   public DataSource dataSource() {
     HikariConfig config = new HikariConfig();
-    Dotenv dotenv = Dotenv.configure().load();
+    Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
 
     config.setJdbcUrl(dotenv.get("SUPABASE_URL"));
     config.setUsername(dotenv.get("SUPABASE_USER"));
