@@ -14,7 +14,7 @@ import java.util.UUID;
 
 @Service
 public class JwtService {
-  private final Dotenv dotenv = Dotenv.configure().load();
+  private final Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
   private final String SECRET_KEY = dotenv.get("JWT_SECRET_KEY");
   private final long EXPIRATION_TIME = 30 * 60 * 1000;
 
