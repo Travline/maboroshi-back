@@ -13,4 +13,12 @@ public class AuthStatusMapper {
       default -> 500;
     };
   }
+
+  public static int getStatus(LoginError error) {
+    return switch (error) {
+      case InvalidCredentials ic -> 401;
+      case UserNotActive uan -> 403;
+      default -> 500;
+    };
+  }
 }

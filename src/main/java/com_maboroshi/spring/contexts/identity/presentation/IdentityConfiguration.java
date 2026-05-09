@@ -1,5 +1,6 @@
 package com_maboroshi.spring.contexts.identity.presentation;
 
+import com_maboroshi.spring.contexts.identity.application.use_cases.LoginUserUseCase;
 import com_maboroshi.spring.contexts.identity.application.use_cases.RegisterUserUseCase;
 import com_maboroshi.spring.contexts.identity.domain.ports.PasswordHasher;
 import com_maboroshi.spring.contexts.identity.domain.ports.UserRepository;
@@ -14,5 +15,10 @@ public class IdentityConfiguration {
   @Bean
   public RegisterUserUseCase registerUserUseCase(UserRepository userRepository, PasswordHasher passwordHasher, UuidGenerator uuidGenerator, AppLogger appLogger) {
     return new RegisterUserUseCase(userRepository, passwordHasher, uuidGenerator, appLogger);
+  }
+
+  @Bean
+  public LoginUserUseCase loginUserUseCase(UserRepository userRepository, PasswordHasher passwordHasher, AppLogger appLogger) {
+    return new LoginUserUseCase(userRepository, passwordHasher, appLogger);
   }
 }
