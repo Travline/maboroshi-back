@@ -5,3 +5,9 @@ spring:
   threads:
     virtual:
       enabled: true
+
+springdoc:
+  swagger-ui:
+    path: /api-docs
+  api-docs:
+    path: /api-spec
