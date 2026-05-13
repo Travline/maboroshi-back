@@ -7,7 +7,7 @@ public class BaseProduct {
   private String productName;
   private String artist;
   private double realPrice;
-  private double salePrice;
+  private Double salePrice;
   private int stock;
   private String slug;
   private String[] images;
@@ -43,7 +43,7 @@ public class BaseProduct {
     return realPrice;
   }
 
-  public double getSalePrice() {
+  public Double getSalePrice() {
     return salePrice;
   }
 
