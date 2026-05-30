@@ -8,6 +8,7 @@ import com_maboroshi.spring.contexts.catalog.application.use_cases.GetRecommende
 import com_maboroshi.spring.contexts.catalog.application.use_cases.SearchProductsUseCase;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com_maboroshi.spring.contexts.catalog.application.use_cases.GetArtistsUseCase;
 
 import java.util.List;
 
@@ -20,15 +21,19 @@ public class CatalogController {
   private final GetProductsUseCase getProductsUseCase;
   private final SearchProductsUseCase searchProductsUseCase;
   private final GetRecommendedProductsUseCase getRecommendedProductsUseCase;
+  private final GetArtistsUseCase getArtistsUseCase;
 
-  public CatalogController(
-      GetProductsUseCase getProductsUseCase,
-      SearchProductsUseCase searchProductsUseCase,
-      GetRecommendedProductsUseCase getRecommendedProductsUseCase
-  ) {
+public CatalogController(
+    GetProductsUseCase getProductsUseCase,
+    SearchProductsUseCase searchProductsUseCase,
+    GetRecommendedProductsUseCase getRecommendedProductsUseCase,
+    GetArtistsUseCase getArtistsUseCase
+)
+ {
     this.getProductsUseCase = getProductsUseCase;
     this.searchProductsUseCase = searchProductsUseCase;
     this.getRecommendedProductsUseCase = getRecommendedProductsUseCase;
+    this.getArtistsUseCase = getArtistsUseCase;
   }
 
   @GetMapping("/products")
@@ -68,4 +73,13 @@ public class CatalogController {
             .body(error.message())
     );
   }
+
+    @GetMapping("/artists")
+    public ResponseEntity<?> getArtists() {
+    return getArtistsUseCase.execute().match(
+      artists -> ResponseEntity.ok(artists),
+      error -> ResponseEntity.badRequest().body(error)
+  );
+}
+
 }

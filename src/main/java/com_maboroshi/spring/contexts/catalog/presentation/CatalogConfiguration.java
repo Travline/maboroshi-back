@@ -7,6 +7,7 @@ import com_maboroshi.spring.contexts.catalog.domain.ports.ProductRepository;
 import com_maboroshi.spring.shared.utils.AppLogger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import com_maboroshi.spring.contexts.catalog.application.use_cases.GetArtistsUseCase;
 
 @Configuration
 public class CatalogConfiguration {
@@ -22,7 +23,15 @@ public class CatalogConfiguration {
   }
 
   @Bean
-  public GetRecommendedProductsUseCase getRecommendedProductsUseCase(ProductRepository productRepository, AppLogger appLogger) {
+  public GetRecommendedProductsUseCase getRecommendedProductsUseCase(ProductRepository productRepository,
+      AppLogger appLogger) {
     return new GetRecommendedProductsUseCase(productRepository, appLogger);
+  }
+
+  @Bean
+  public GetArtistsUseCase getArtistsUseCase(
+      ProductRepository productRepository,
+      AppLogger appLogger) {
+    return new GetArtistsUseCase(productRepository, appLogger);
   }
 }

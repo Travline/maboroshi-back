@@ -8,6 +8,8 @@ import com_maboroshi.spring.contexts.catalog.infrastructure.errors.ProductsCanno
 import com_maboroshi.spring.shared.core.Result;
 import com_maboroshi.spring.shared.errors.RepositoryError;
 import org.springframework.stereotype.Repository;
+import com_maboroshi.spring.contexts.catalog.domain.entities.Artist;
+import com_maboroshi.spring.shared.errors.RepositoryError;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -82,6 +84,11 @@ public class MockedProductRepository implements ProductRepository {
         .orElse(Result.fail(new ProductNotFound("Product not found: " + slug)));
   }
 
+  @Override
+  public Result<Artist[], RepositoryError> getArtists() {
+    return Result.ok(new Artist[0]);
+  }
+
   private BaseProduct toBase(DetailedProduct p) {
     return new BaseProduct(
         p.getId(),
@@ -93,7 +100,6 @@ public class MockedProductRepository implements ProductRepository {
         p.getSlug(),
         p.getImages(),
         false,
-        false
-    );
+        false);
   }
 }
