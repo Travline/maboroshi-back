@@ -9,6 +9,9 @@ import com_maboroshi.spring.shared.core.Result;
 import com_maboroshi.spring.shared.errors.RepositoryError;
 import org.springframework.stereotype.Repository;
 import com_maboroshi.spring.contexts.catalog.domain.entities.Artist;
+import com_maboroshi.spring.contexts.catalog.domain.entities.ArtistDetail;
+import com_maboroshi.spring.shared.errors.RepositoryError;
+import com_maboroshi.spring.contexts.catalog.domain.entities.ArtistDetail;
 import com_maboroshi.spring.shared.errors.RepositoryError;
 
 import java.util.ArrayList;
@@ -87,6 +90,12 @@ public class MockedProductRepository implements ProductRepository {
   @Override
   public Result<Artist[], RepositoryError> getArtists() {
     return Result.ok(new Artist[0]);
+  }
+
+  @Override
+  public Result<ArtistDetail, RepositoryError> getArtistDetail(String artistId) {
+    return Result.fail(
+        new ProductNotFound("Artist not found"));
   }
 
   private BaseProduct toBase(DetailedProduct p) {

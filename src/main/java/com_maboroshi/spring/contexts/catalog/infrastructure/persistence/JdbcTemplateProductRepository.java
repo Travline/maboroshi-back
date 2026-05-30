@@ -8,6 +8,7 @@ import com_maboroshi.spring.shared.errors.RepositoryError;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 import com_maboroshi.spring.contexts.catalog.domain.entities.Artist;
+import com_maboroshi.spring.contexts.catalog.domain.entities.ArtistDetail;
 
 @Repository
 @Primary
@@ -17,17 +18,19 @@ public class JdbcTemplateProductRepository implements ProductRepository {
   private final ProductSearchQueries searchQueries;
   private final ProductDetailQueries detailQueries;
   private final ArtistQueries artistQueries;
+  private final ArtistDetailQueries artistDetailQueries;
 
-public JdbcTemplateProductRepository(
-    ProductListQueries listQueries,
-    ProductSearchQueries searchQueries,
-    ProductDetailQueries detailQueries,
-    ArtistQueries artistQueries
-) {
+  public JdbcTemplateProductRepository(
+      ProductListQueries listQueries,
+      ProductSearchQueries searchQueries,
+      ProductDetailQueries detailQueries,
+      ArtistQueries artistQueries,
+      ArtistDetailQueries artistDetailQueries) {
     this.listQueries = listQueries;
     this.searchQueries = searchQueries;
     this.detailQueries = detailQueries;
     this.artistQueries = artistQueries;
+    this.artistDetailQueries = artistDetailQueries;
   }
 
   @Override
@@ -64,4 +67,10 @@ public JdbcTemplateProductRepository(
   public Result<Artist[], RepositoryError> getArtists() {
     return artistQueries.getArtists();
   }
+
+  @Override
+  public Result<ArtistDetail, RepositoryError> getArtistDetail(String artistId) {
+    return artistDetailQueries.getArtistDetail(artistId);
+  }
+
 }

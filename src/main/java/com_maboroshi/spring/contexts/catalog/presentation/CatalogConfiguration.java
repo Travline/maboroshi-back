@@ -8,6 +8,7 @@ import com_maboroshi.spring.shared.utils.AppLogger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import com_maboroshi.spring.contexts.catalog.application.use_cases.GetArtistsUseCase;
+import com_maboroshi.spring.contexts.catalog.application.use_cases.GetArtistDetailUseCase;
 
 @Configuration
 public class CatalogConfiguration {
@@ -33,5 +34,14 @@ public class CatalogConfiguration {
       ProductRepository productRepository,
       AppLogger appLogger) {
     return new GetArtistsUseCase(productRepository, appLogger);
+  }
+
+  @Bean
+  public GetArtistDetailUseCase getArtistDetailUseCase(
+      ProductRepository productRepository,
+      AppLogger appLogger) {
+    return new GetArtistDetailUseCase(
+        productRepository,
+        appLogger);
   }
 }

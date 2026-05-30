@@ -5,6 +5,7 @@ import com_maboroshi.spring.contexts.catalog.domain.entities.DetailedProduct;
 import com_maboroshi.spring.shared.core.Result;
 import com_maboroshi.spring.shared.errors.RepositoryError;
 import com_maboroshi.spring.contexts.catalog.domain.entities.Artist;
+import com_maboroshi.spring.contexts.catalog.domain.entities.ArtistDetail;
 
 public interface ProductRepository {
   Result<BaseProduct[], RepositoryError> getLastProducts(int length);
@@ -20,4 +21,7 @@ public interface ProductRepository {
   Result<BaseProduct[], RepositoryError> getRecommendedProducts(String[] names);
 
   Result<Artist[], RepositoryError> getArtists();
+
+  Result<ArtistDetail, RepositoryError> getArtistDetail(String artistId);
+  
 }
