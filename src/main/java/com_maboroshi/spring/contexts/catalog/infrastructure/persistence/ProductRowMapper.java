@@ -18,13 +18,16 @@ public class ProductRowMapper implements RowMapper<BaseProduct> {
         UUID.fromString(rs.getString("id")),
         rs.getString("product_name"),
         rs.getString("artist"),
+        rs.getString("artist_image"),
         rs.getDouble("real_price"),
         rs.getDouble("sale_price"),
         rs.getInt("stock"),
         rs.getString("slug"),
         images,
         false,
-        false
+        false,
+        rs.getString("type"),
+        rs.getString("status")
     );
   }
 }

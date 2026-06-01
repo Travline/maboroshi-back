@@ -1,4 +1,4 @@
-package com_maboroshi.spring.contexts.catalog.domain.ports;
+package com_maboroshi.spring.contexts.catalog.infrastructure.persistence;
 
 import com_maboroshi.spring.contexts.catalog.domain.entities.Artist;
 import com_maboroshi.spring.contexts.catalog.domain.entities.BaseProduct;
@@ -17,5 +17,4 @@ public interface ProductRepository {
   Result<BaseProduct[], RepositoryError> getRecommendedProducts(String[] names);
   Result<Artist[], RepositoryError> getAllArtists();
   Result<Artist, RepositoryError> getArtistByName(String name);
-  Result<BaseProduct[], RepositoryError> getProductsByArtistName(String name);
 }

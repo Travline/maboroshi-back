@@ -28,18 +28,20 @@ public class ProductSearchQueries {
 
   public Result<BaseProduct[], RepositoryError> searchProducts(String term) {
     String sql = """
-        SELECT DISTINCT p.id, p.product_name, p.artist, p.real_price, p.sale_price,
-       p.stock, p.slug, p.views,
-               ARRAY(SELECT url FROM product_images WHERE product_id = p.id) AS images
-        FROM products p
-        LEFT JOIN tracklists t ON t.product_id = p.id
-        WHERE p.is_visible = true
-          AND (
-            p.product_name ILIKE ?
-            OR p.artist ILIKE ?
-            OR t.song ILIKE ?
-          )
-        ORDER BY p.views DESC
+        SELECT DISTINCT ON (p.id) p.id, p.product_name, p.artist, p.real_price, p.sale_price,
+       p.stock, p.slug, p.type, p.status,
+       a.image AS artist_image,
+       ARRAY(SELECT url FROM product_images WHERE product_id = p.id) AS images
+FROM products p
+LEFT JOIN artists a ON a.id = p.artist_id
+LEFT JOIN tracklists t ON t.product_id = p.id
+WHERE p.is_visible = true
+  AND (
+    p.product_name ILIKE ?
+    OR p.artist ILIKE ?
+    OR t.song ILIKE ?
+  )
+ORDER BY p.id DESC
         """;
     String likeTerm = "%" + term + "%";
     try {
@@ -59,9 +61,11 @@ public class ProductSearchQueries {
     String placeholders = String.join(", ", Collections.nCopies(names.length, "?"));
     String sql = String.format("""
         SELECT p.id, p.product_name, p.artist, p.real_price, p.sale_price,
-               p.stock, p.slug,
+               p.stock, p.slug, p.type, p.status,
+               a.image AS artist_image,
                ARRAY(SELECT url FROM product_images WHERE product_id = p.id) AS images
         FROM products p
+        LEFT JOIN artists a ON a.id = p.artist_id
         WHERE p.is_visible = true
           AND p.product_name = ANY(ARRAY[%s]::TEXT[])
         """, placeholders);
