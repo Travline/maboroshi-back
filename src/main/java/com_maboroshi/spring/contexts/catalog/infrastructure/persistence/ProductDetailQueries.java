@@ -25,13 +25,15 @@ public class ProductDetailQueries {
   public Result<DetailedProduct, RepositoryError> getProductDetail(String slug) {
     String sql = """
         SELECT p.id, p.product_name, p.artist, p.real_price, p.sale_price,
-               p.stock, p.slug,
+               p.stock, p.slug, p.type, p.status,
+               a.image AS artist_image,
                ARRAY(SELECT url FROM product_images WHERE product_id = p.id) AS images,
                ARRAY(SELECT t.song FROM tracklists t WHERE t.product_id = p.id ORDER BY t.id) AS tracklist,
                ARRAY(SELECT g.genre_name FROM genres g
                      JOIN product_genres pg ON pg.genre_id = g.id
                      WHERE pg.product_id = p.id) AS genres
         FROM products p
+        LEFT JOIN artists a ON a.id = p.artist_id
         WHERE p.slug = ?
           AND p.is_visible = true
         """;
@@ -44,6 +46,7 @@ public class ProductDetailQueries {
             UUID.fromString(rs.getString("id")),
             rs.getString("product_name"),
             rs.getString("artist"),
+            rs.getString("artist_image"),
             rs.getDouble("real_price"),
             rs.getDouble("sale_price"),
             rs.getInt("stock"),
@@ -51,6 +54,8 @@ public class ProductDetailQueries {
             images,
             false,
             false,
+            rs.getString("type"),
+            rs.getString("status"),
             tracklist,
             genres
         );

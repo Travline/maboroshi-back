@@ -1,8 +1,6 @@
 package com_maboroshi.spring.contexts.catalog.presentation;
 
-import com_maboroshi.spring.contexts.catalog.application.use_cases.GetProductsUseCase;
-import com_maboroshi.spring.contexts.catalog.application.use_cases.GetRecommendedProductsUseCase;
-import com_maboroshi.spring.contexts.catalog.application.use_cases.SearchProductsUseCase;
+import com_maboroshi.spring.contexts.catalog.application.use_cases.*;
 import com_maboroshi.spring.contexts.catalog.domain.ports.ProductRepository;
 import com_maboroshi.spring.shared.utils.AppLogger;
 import org.springframework.context.annotation.Bean;
@@ -24,5 +22,20 @@ public class CatalogConfiguration {
   @Bean
   public GetRecommendedProductsUseCase getRecommendedProductsUseCase(ProductRepository productRepository, AppLogger appLogger) {
     return new GetRecommendedProductsUseCase(productRepository, appLogger);
+  }
+
+  @Bean
+  public GetArtistsUseCase getArtistsUseCase(ProductRepository productRepository, AppLogger appLogger) {
+    return new GetArtistsUseCase(productRepository, appLogger);
+  }
+
+  @Bean
+  public GetArtistUseCase getArtistUseCase(ProductRepository productRepository, AppLogger appLogger) {
+    return new GetArtistUseCase(productRepository, appLogger);
+  }
+
+  @Bean
+  public GetProductsByArtistUseCase getProductsByArtistUseCase(ProductRepository productRepository, AppLogger appLogger) {
+    return new GetProductsByArtistUseCase(productRepository, appLogger);
   }
 }

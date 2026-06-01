@@ -3,9 +3,7 @@ package com_maboroshi.spring.contexts.catalog.presentation;
 import com_maboroshi.spring.contexts.catalog.application.dtos.GetProductsRequest;
 import com_maboroshi.spring.contexts.catalog.application.dtos.GetRecommendedProductsRequest;
 import com_maboroshi.spring.contexts.catalog.application.dtos.SearchProductsRequest;
-import com_maboroshi.spring.contexts.catalog.application.use_cases.GetProductsUseCase;
-import com_maboroshi.spring.contexts.catalog.application.use_cases.GetRecommendedProductsUseCase;
-import com_maboroshi.spring.contexts.catalog.application.use_cases.SearchProductsUseCase;
+import com_maboroshi.spring.contexts.catalog.application.use_cases.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,52 +18,77 @@ public class CatalogController {
   private final GetProductsUseCase getProductsUseCase;
   private final SearchProductsUseCase searchProductsUseCase;
   private final GetRecommendedProductsUseCase getRecommendedProductsUseCase;
+  private final GetArtistsUseCase getArtistsUseCase;
+  private final GetArtistUseCase getArtistUseCase;
+  private final GetProductsByArtistUseCase getProductsByArtistUseCase;
 
   public CatalogController(
       GetProductsUseCase getProductsUseCase,
       SearchProductsUseCase searchProductsUseCase,
-      GetRecommendedProductsUseCase getRecommendedProductsUseCase
+      GetRecommendedProductsUseCase getRecommendedProductsUseCase,
+      GetArtistsUseCase getArtistsUseCase,
+      GetArtistUseCase getArtistUseCase,
+      GetProductsByArtistUseCase getProductsByArtistUseCase
   ) {
     this.getProductsUseCase = getProductsUseCase;
     this.searchProductsUseCase = searchProductsUseCase;
     this.getRecommendedProductsUseCase = getRecommendedProductsUseCase;
+    this.getArtistsUseCase = getArtistsUseCase;
+    this.getArtistUseCase = getArtistUseCase;
+    this.getProductsByArtistUseCase = getProductsByArtistUseCase;
   }
 
   @GetMapping("/products")
   public ResponseEntity<?> getProducts(
-      @RequestParam(name = "order_by", defaultValue = "date") String orderBy
+      @RequestParam(name = "order_by", defaultValue = "date") String orderBy,
+      @RequestParam(name = "type", required = false) String type,
+      @RequestParam(name = "status", required = false) String status
   ) {
-    return getProductsUseCase.execute(new GetProductsRequest(orderBy, DEFAULT_LENGTH)).match(
+    return getProductsUseCase.execute(new GetProductsRequest(orderBy, DEFAULT_LENGTH, type, status)).match(
         products -> ResponseEntity.ok(products),
-        error -> ResponseEntity
-            .status(CatalogStatusMapper.getStatus(error))
-            .body(error.message())
+        error -> ResponseEntity.status(CatalogStatusMapper.getStatus(error)).body(error.message())
     );
   }
 
   @GetMapping("/products/search")
-  public ResponseEntity<?> searchProducts(
-      @RequestParam String term
-  ) {
+  public ResponseEntity<?> searchProducts(@RequestParam String term) {
     return searchProductsUseCase.execute(new SearchProductsRequest(term)).match(
         products -> ResponseEntity.ok(products),
-        error -> ResponseEntity
-            .status(CatalogStatusMapper.getStatus(error))
-            .body(error.message())
+        error -> ResponseEntity.status(CatalogStatusMapper.getStatus(error)).body(error.message())
     );
   }
 
   @PostMapping("/products/recommended")
-  public ResponseEntity<?> getRecommendedProducts(
-      @RequestBody List<String> names
-  ) {
+  public ResponseEntity<?> getRecommendedProducts(@RequestBody List<String> names) {
     return getRecommendedProductsUseCase.execute(
         new GetRecommendedProductsRequest(names.toArray(new String[0]))
     ).match(
         products -> ResponseEntity.ok(products),
-        error -> ResponseEntity
-            .status(CatalogStatusMapper.getStatus(error))
-            .body(error.message())
+        error -> ResponseEntity.status(CatalogStatusMapper.getStatus(error)).body(error.message())
+    );
+  }
+
+  @GetMapping("/artists")
+  public ResponseEntity<?> getArtists() {
+    return getArtistsUseCase.execute().match(
+        artists -> ResponseEntity.ok(artists),
+        error -> ResponseEntity.status(CatalogStatusMapper.getStatus(error)).body(error.message())
+    );
+  }
+
+  @GetMapping("/artists/{name}")
+  public ResponseEntity<?> getArtist(@PathVariable String name) {
+    return getArtistUseCase.execute(name).match(
+        artist -> ResponseEntity.ok(artist),
+        error -> ResponseEntity.status(CatalogStatusMapper.getStatus(error)).body(error.message())
+    );
+  }
+
+  @GetMapping("/artists/{name}/products")
+  public ResponseEntity<?> getProductsByArtist(@PathVariable String name) {
+    return getProductsByArtistUseCase.execute(name).match(
+        products -> ResponseEntity.ok(products),
+        error -> ResponseEntity.status(CatalogStatusMapper.getStatus(error)).body(error.message())
     );
   }
 }

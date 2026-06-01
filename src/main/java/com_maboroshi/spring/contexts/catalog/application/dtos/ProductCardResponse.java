@@ -6,12 +6,15 @@ public record ProductCardResponse(
     String productId,
     String productName,
     String artist,
+    String artistImage,
     double realPrice,
     double salePrice,
     double discount,
     String slug,
     List<String> images,
     boolean inWishlist,
-    boolean inCart
+    boolean inCart,
+    String type,
+    String status
 ) {
 }

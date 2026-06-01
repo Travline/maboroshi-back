@@ -8,7 +8,7 @@ public class ProductCardMapper {
 
   public static ProductCardResponse toResponse(BaseProduct product) {
     double discount = 0;
-    if (product.getSalePrice() > 0 && product.getRealPrice() > 0) {
+    if (product.getSalePrice() != null && product.getSalePrice() > 0 && product.getRealPrice() > 0) {
       discount = Math.round(((product.getRealPrice() - product.getSalePrice()) / product.getRealPrice()) * 100.0);
     }
 
@@ -16,13 +16,16 @@ public class ProductCardMapper {
         product.getId().toString(),
         product.getProductName(),
         product.getArtist(),
+        product.getArtistImage(),
         product.getRealPrice(),
-        product.getSalePrice(),
+        product.getSalePrice() != null ? product.getSalePrice() : 0.0,
         discount,
         product.getSlug(),
         Arrays.asList(product.getImages()),
         product.isInWishlist(),
-        product.isInCart()
+        product.isInCart(),
+        product.getType(),
+        product.getStatus()
     );
   }
 
