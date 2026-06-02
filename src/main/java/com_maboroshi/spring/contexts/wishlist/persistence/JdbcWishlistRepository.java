@@ -20,8 +20,8 @@ public class JdbcWishlistRepository implements WishlistRepository {
   private final RowMapper<WishlistItem> rowMapper = (rs, rowNum) -> WishlistItem.builder()
       .productId(UUID.fromString(rs.getString("product_id")))
       .productName(rs.getString("product_name"))
-      .realPrice(rs.getDouble("real_price"))
-      .salePrice(rs.getObject("sale_price", Double.class))
+      .realPrice(rs.getBigDecimal("real_price").doubleValue())
+      .salePrice(rs.getBigDecimal("sale_price").doubleValue())
       .slug(rs.getString("slug"))
       .build();
 
