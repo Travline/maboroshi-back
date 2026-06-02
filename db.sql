@@ -1,83 +1,92 @@
--- 1. Tabla de Usuarios
-CREATE TABLE users
-(
-    id        UUID PRIMARY KEY,
-    username  TEXT NOT NULL,
-    mail      TEXT NOT NULL UNIQUE,
-    pwd       TEXT NOT NULL,
-    phone     TEXT NOT NULL,
-    is_active BOOLEAN DEFAULT TRUE -- En Postgres usamos BOOLEAN en lugar de 0/1
-);
+-- WARNING: This schema is for context only and is not meant to be run.
+-- Table order and constraints may not be valid for execution.
 
--- 2. Tabla de Géneros
-CREATE TABLE genres
-(
-    id         SERIAL PRIMARY KEY, -- SERIAL reemplaza a AUTOINCREMENT
-    genre_name TEXT NOT NULL UNIQUE
+CREATE TABLE public.users (
+    id uuid NOT NULL,
+    username text NOT NULL,
+    mail text NOT NULL UNIQUE,
+    pwd text NOT NULL,
+    phone text,
+    is_active boolean DEFAULT true,
+    CONSTRAINT users_pkey PRIMARY KEY (id)
 );
-
--- 3. Tabla de Productos
-CREATE TABLE products
-(
-    id           UUID PRIMARY KEY,
-    product_name TEXT           NOT NULL,
-    artist       TEXT           NOT NULL,
-    real_price   DECIMAL(10, 2) NOT NULL,
-    sale_price   DECIMAL(10, 2),
-    stock        INTEGER DEFAULT 0,
-    slug         TEXT UNIQUE    NOT NULL,
-    views        INTEGER DEFAULT 0,
-    is_visible   BOOLEAN DEFAULT TRUE
+CREATE TABLE public.genres (
+    id integer NOT NULL DEFAULT nextval('genres_id_seq'::regclass),
+    genre_name text NOT NULL UNIQUE,
+    CONSTRAINT genres_pkey PRIMARY KEY (id)
 );
-
--- 4. Tabla Intermedia: Productos y Géneros
-CREATE TABLE product_genres
-(
-    product_id UUID REFERENCES products (id) ON DELETE CASCADE,
-    genre_id   INTEGER REFERENCES genres (id) ON DELETE CASCADE,
-    PRIMARY KEY (product_id, genre_id)
+CREATE TABLE public.products (
+    id uuid NOT NULL,
+    product_name text NOT NULL,
+    artist text NOT NULL,
+    real_price numeric NOT NULL,
+    sale_price numeric,
+    stock integer DEFAULT 0,
+    slug text NOT NULL UNIQUE,
+    views integer DEFAULT 0,
+    is_visible boolean DEFAULT true,
+    type text NOT NULL DEFAULT 'vinyl'::text,
+    status text NOT NULL DEFAULT 'sale'::text,
+    artist_id uuid,
+    CONSTRAINT products_pkey PRIMARY KEY (id),
+CONSTRAINT products_artist_id_fkey FOREIGN KEY (artist_id) REFERENCES public.artists(id)
 );
-
--- 5. Tabla de Tracklist
-CREATE TABLE tracklists
-(
-    id         SERIAL PRIMARY KEY,
-    product_id UUID NOT NULL REFERENCES products (id) ON DELETE CASCADE,
-    song       TEXT NOT NULL
+CREATE TABLE public.product_genres (
+   product_id uuid NOT NULL,
+   genre_id integer NOT NULL,
+   CONSTRAINT product_genres_pkey PRIMARY KEY (product_id, genre_id),
+   CONSTRAINT product_genres_product_id_fkey FOREIGN KEY (product_id) REFERENCES public.products(id),
+   CONSTRAINT product_genres_genre_id_fkey FOREIGN KEY (genre_id) REFERENCES public.genres(id)
 );
-
--- 6. Tabla de Imágenes de Productos
-CREATE TABLE product_images
-(
-    id         UUID PRIMARY KEY,
-    url        TEXT NOT NULL,
-    product_id UUID NOT NULL REFERENCES products (id) ON DELETE CASCADE
+CREATE TABLE public.tracklists (
+    id integer NOT NULL DEFAULT nextval('tracklists_id_seq'::regclass),
+    product_id uuid NOT NULL,
+    song text NOT NULL,
+    CONSTRAINT tracklists_pkey PRIMARY KEY (id),
+    CONSTRAINT tracklists_product_id_fkey FOREIGN KEY (product_id) REFERENCES public.products(id)
 );
-
--- 7. Tabla de Wishlist
-CREATE TABLE whishlists
-(
-    user_id    UUID REFERENCES users (id) ON DELETE CASCADE,
-    product_id UUID REFERENCES products (id) ON DELETE CASCADE,
-    PRIMARY KEY (user_id, product_id)
+CREATE TABLE public.product_images (
+    id uuid NOT NULL,
+    url text NOT NULL,
+    product_id uuid NOT NULL,
+    CONSTRAINT product_images_pkey PRIMARY KEY (id),
+    CONSTRAINT product_images_product_id_fkey FOREIGN KEY (product_id) REFERENCES public.products(id)
 );
-
--- 8. Tabla de Carrito
-CREATE TABLE carts
-(
-    id         SERIAL PRIMARY KEY,
-    user_id    UUID    NOT NULL REFERENCES users (id) ON DELETE CASCADE,
-    product_id UUID    NOT NULL REFERENCES products (id) ON DELETE CASCADE,
-    quantity   INTEGER NOT NULL CHECK (quantity > 0)
+CREATE TABLE public.whishlists (
+    user_id uuid NOT NULL,
+    product_id uuid NOT NULL,
+    CONSTRAINT whishlists_pkey PRIMARY KEY (user_id, product_id),
+    CONSTRAINT whishlists_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id),
+    CONSTRAINT whishlists_product_id_fkey FOREIGN KEY (product_id) REFERENCES public.products(id)
 );
-
--- 9. Tabla de Ventas
-CREATE TABLE sales
-(
-    id         SERIAL PRIMARY KEY,
-    sale_group UUID    NOT NULL,
-    user_id    UUID    NOT NULL REFERENCES users (id),
-    product_id UUID    NOT NULL REFERENCES products (id),
-    quantity   INTEGER NOT NULL CHECK (quantity > 0),
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() -- Formato estándar de Supabase
+CREATE TABLE public.carts (
+    id integer NOT NULL DEFAULT nextval('carts_id_seq'::regclass),
+    user_id uuid NOT NULL,
+    product_id uuid NOT NULL,
+    quantity integer NOT NULL CHECK (quantity > 0),
+    CONSTRAINT carts_pkey PRIMARY KEY (id),
+    CONSTRAINT carts_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id),
+    CONSTRAINT carts_product_id_fkey FOREIGN KEY (product_id) REFERENCES public.products(id)
+);
+CREATE TABLE public.sales (
+    id integer NOT NULL DEFAULT nextval('sales_id_seq'::regclass),
+    sale_group uuid NOT NULL,
+    user_id uuid NOT NULL,
+    product_id uuid NOT NULL,
+    quantity integer NOT NULL CHECK (quantity > 0),
+    created_at timestamp with time zone DEFAULT now(),
+    CONSTRAINT sales_pkey PRIMARY KEY (id),
+    CONSTRAINT sales_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id),
+    CONSTRAINT sales_product_id_fkey FOREIGN KEY (product_id) REFERENCES public.products(id)
+);
+CREATE TABLE public.artists (
+    id uuid NOT NULL,
+    name text NOT NULL UNIQUE,
+    image text NOT NULL,
+    CONSTRAINT artists_pkey PRIMARY KEY (id)
+);
+CREATE TABLE public.product_images_backup (
+    id uuid,
+    url text,
+    product_id uuid
 );
