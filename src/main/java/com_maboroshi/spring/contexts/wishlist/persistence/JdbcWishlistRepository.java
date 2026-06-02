@@ -1,6 +1,7 @@
 package com_maboroshi.spring.contexts.wishlist.persistence;
 
 import com_maboroshi.spring.contexts.wishlist.models.WishlistItem;
+import com_maboroshi.spring.shared.utils.Slf4jLogger;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -13,7 +14,7 @@ import java.util.UUID;
 @Repository
 @RequiredArgsConstructor
 public class JdbcWishlistRepository implements WishlistRepository {
-
+  private final Slf4jLogger slf4jLogger;
   private final JdbcTemplate jdbcTemplate;
 
   private final RowMapper<WishlistItem> rowMapper = (rs, rowNum) -> WishlistItem.builder()
@@ -48,6 +49,7 @@ public class JdbcWishlistRepository implements WishlistRepository {
       return Optional.of(items);
 
     } catch (Exception e) {
+      slf4jLogger.error("Find items wishlist", e);
       return Optional.empty();
     }
   }
@@ -77,6 +79,7 @@ public class JdbcWishlistRepository implements WishlistRepository {
       List<WishlistItem> results = jdbcTemplate.query(selectSql, rowMapper, userId, productId);
       return results.stream().findFirst();
     } catch (Exception e) {
+      slf4jLogger.error("Saving item in wishlist", e);
       return Optional.empty();
     }
   }
@@ -109,6 +112,7 @@ public class JdbcWishlistRepository implements WishlistRepository {
 
       return Optional.empty();
     } catch (Exception e) {
+      slf4jLogger.error("Deleting item from wishlist", e);
       return Optional.empty();
     }
   }
