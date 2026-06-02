@@ -18,7 +18,7 @@ public class WishlistErrorHandler {
   public ResponseEntity<HashMap<String, String>> handleUserUnauthenticated(UserUnauthenticated ex) {
     var resBody = new HashMap<String, String>();
     resBody.put("error", ex.getMessage());
-    logger.warn(ex.getMessage() + " " + ex.getCause().toString());
+    logger.warn(ex.getMessage());
     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(resBody);
   }
 
@@ -26,7 +26,23 @@ public class WishlistErrorHandler {
   public ResponseEntity<HashMap<String, String>> handleCannotAddItem(CannotAddItem ex) {
     var resBody = new HashMap<String, String>();
     resBody.put("error", ex.getMessage());
-    logger.warn(ex.getMessage() + " " + ex.getCause().toString());
-    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(resBody);
+    logger.warn(ex.getMessage());
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resBody);
+  }
+
+  @ExceptionHandler(CannotRemoveItem.class)
+  public ResponseEntity<HashMap<String, String>> handleCannotAddItem(CannotRemoveItem ex) {
+    var resBody = new HashMap<String, String>();
+    resBody.put("error", ex.getMessage());
+    logger.warn(ex.getMessage());
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resBody);
+  }
+
+  @ExceptionHandler(WishlistNotFound.class)
+  public ResponseEntity<HashMap<String, String>> handleCannotAddItem(WishlistNotFound ex) {
+    var resBody = new HashMap<String, String>();
+    resBody.put("error", ex.getMessage());
+    logger.warn(ex.getMessage());
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(resBody);
   }
 }
