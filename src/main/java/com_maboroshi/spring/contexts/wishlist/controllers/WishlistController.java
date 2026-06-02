@@ -26,7 +26,7 @@ public class WishlistController {
 
   @PostMapping("/{id}")
   public ResponseEntity<WishlistItem> newWishlistProduct(
-      @CookieValue(name = "maboroshi-token") String token,
+      @CookieValue(name = "maboroshi-token", required = false) String token,
       @PathVariable UUID id) {
 
     UUID userId = extractUserIdOrThrow(token);
@@ -37,7 +37,7 @@ public class WishlistController {
 
   @DeleteMapping("/{id}")
   public ResponseEntity<WishlistItem> deleteWishlistProduct(
-      @CookieValue(name = "maboroshi-token") String token,
+      @CookieValue(name = "maboroshi-token", required = false) String token,
       @PathVariable UUID id) {
 
     UUID userId = extractUserIdOrThrow(token);
@@ -48,7 +48,7 @@ public class WishlistController {
 
   @GetMapping
   public ResponseEntity<List<WishlistItem>> getWishlistProducts(
-      @CookieValue(name = "maboroshi-token") String token) {
+      @CookieValue(name = "maboroshi-token", required = false) String token) {
 
     UUID userId = extractUserIdOrThrow(token);
 
