@@ -61,8 +61,7 @@ public class JdbcCartRepository implements CartRepository {
   public Optional<CartItem> saveCartItemByUserId(UUID userId, UUID productId) {
     String insertSql = """
         INSERT INTO carts (user_id, product_id, quantity) 
-        VALUES (?, ?, 1)
-        ON CONFLICT (user_id, product_id) DO NOTHING; 
+        VALUES (?, ?, 1);
         """;
 
     String selectSql = """

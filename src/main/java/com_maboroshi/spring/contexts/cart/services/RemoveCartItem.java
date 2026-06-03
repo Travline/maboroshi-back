@@ -16,6 +16,6 @@ public class RemoveCartItem {
   public CartItem execute(UUID userId, UUID productId) {
     return repository
         .deleteCartItemByUserId(userId, productId)
-        .orElseThrow(() -> new CannotRemoveItem("Cannot remove item from wishlist or item does not exist"));
+        .orElseThrow(() -> new CannotRemoveItem("Cannot remove item from cart or item does not exist"));
   }
 }

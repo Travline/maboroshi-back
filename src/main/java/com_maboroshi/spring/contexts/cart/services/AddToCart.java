@@ -16,6 +16,6 @@ public class AddToCart {
   public CartItem execute(UUID userId, UUID productId) {
     return repository
         .saveCartItemByUserId(userId, productId)
-        .orElseThrow(() -> new CannotAddItem("Cannot add item to wishlist"));
+        .orElseThrow(() -> new CannotAddItem("Cannot add item to cart"));
   }
 }

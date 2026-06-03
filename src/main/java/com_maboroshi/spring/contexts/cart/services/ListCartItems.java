@@ -17,6 +17,6 @@ public class ListCartItems {
   public List<CartItem> execute(UUID userId) {
     return repository
         .findAllCartItemsByUserId(userId)
-        .orElseThrow(() -> new CartNotFound("Could not retrieve wishlist for user: " + userId));
+        .orElseThrow(() -> new CartNotFound("Could not retrieve cart for user: " + userId));
   }
 }
