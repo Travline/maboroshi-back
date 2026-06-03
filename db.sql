@@ -52,12 +52,12 @@ CREATE TABLE public.product_images (
     CONSTRAINT product_images_pkey PRIMARY KEY (id),
     CONSTRAINT product_images_product_id_fkey FOREIGN KEY (product_id) REFERENCES public.products(id)
 );
-CREATE TABLE public.whishlists (
+CREATE TABLE public.wishlists (
     user_id uuid NOT NULL,
     product_id uuid NOT NULL,
-    CONSTRAINT whishlists_pkey PRIMARY KEY (user_id, product_id),
-    CONSTRAINT whishlists_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id),
-    CONSTRAINT whishlists_product_id_fkey FOREIGN KEY (product_id) REFERENCES public.products(id)
+    CONSTRAINT wishlists_pkey PRIMARY KEY (user_id, product_id),
+    CONSTRAINT wishlists_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id),
+    CONSTRAINT wishlists_product_id_fkey FOREIGN KEY (product_id) REFERENCES public.products(id)
 );
 CREATE TABLE public.carts (
     id integer NOT NULL DEFAULT nextval('carts_id_seq'::regclass),
