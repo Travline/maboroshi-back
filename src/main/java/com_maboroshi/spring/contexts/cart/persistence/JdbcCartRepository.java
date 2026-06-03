@@ -156,7 +156,7 @@ public class JdbcCartRepository implements CartRepository {
 
       if (currentStock == null || quantity > currentStock) {
         slf4jLogger.warn("No hay suficiente stock. Requerido: " + quantity + ", Disponible: " + currentStock);
-        throw new IllegalArgumentException("Stock insuficiente para el producto: " + productId);
+        return Optional.empty();
       }
 
       int rowsAffected = jdbcTemplate.update(updateSql, quantity, userId, productId);
@@ -171,7 +171,7 @@ public class JdbcCartRepository implements CartRepository {
 
     } catch (Exception e) {
       slf4jLogger.error("Error al actualizar el item en el carrito: " + e.getMessage(), e);
-      throw new RuntimeException("Error en la transacción del carrito", e);
+      return Optional.empty();
     }
   }
 }
