@@ -4,6 +4,7 @@ import com_maboroshi.spring.contexts.catalog.application.dtos.GetProductsRequest
 import com_maboroshi.spring.contexts.catalog.application.dtos.GetRecommendedProductsRequest;
 import com_maboroshi.spring.contexts.catalog.application.dtos.SearchProductsRequest;
 import com_maboroshi.spring.contexts.catalog.application.use_cases.*;
+import com_maboroshi.spring.contexts.catalog.domain.ports.ProductRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +14,7 @@ import java.util.List;
 @RequestMapping("v1/catalog")
 public class CatalogController {
 
-  private static final int DEFAULT_LENGTH = 10;
+  private static final int DEFAULT_LENGTH = 50;
 
   private final GetProductsUseCase getProductsUseCase;
   private final SearchProductsUseCase searchProductsUseCase;
@@ -21,6 +22,7 @@ public class CatalogController {
   private final GetArtistsUseCase getArtistsUseCase;
   private final GetArtistUseCase getArtistUseCase;
   private final GetProductsByArtistUseCase getProductsByArtistUseCase;
+  private final ProductRepository productRepository;
 
   public CatalogController(
       GetProductsUseCase getProductsUseCase,
@@ -28,14 +30,16 @@ public class CatalogController {
       GetRecommendedProductsUseCase getRecommendedProductsUseCase,
       GetArtistsUseCase getArtistsUseCase,
       GetArtistUseCase getArtistUseCase,
-      GetProductsByArtistUseCase getProductsByArtistUseCase
-  ) {
+      GetProductsByArtistUseCase getProductsByArtistUseCase,
+      ProductRepository productRepository
+      ) {
     this.getProductsUseCase = getProductsUseCase;
     this.searchProductsUseCase = searchProductsUseCase;
     this.getRecommendedProductsUseCase = getRecommendedProductsUseCase;
     this.getArtistsUseCase = getArtistsUseCase;
     this.getArtistUseCase = getArtistUseCase;
     this.getProductsByArtistUseCase = getProductsByArtistUseCase;
+    this.productRepository = productRepository;
   }
 
   @GetMapping("/products")
@@ -43,10 +47,18 @@ public class CatalogController {
       @RequestParam(name = "order_by", defaultValue = "date") String orderBy,
       @RequestParam(name = "type", required = false) String type,
       @RequestParam(name = "status", required = false) String status
-  ) {
+      ) {
     return getProductsUseCase.execute(new GetProductsRequest(orderBy, DEFAULT_LENGTH, type, status)).match(
         products -> ResponseEntity.ok(products),
         error -> ResponseEntity.status(CatalogStatusMapper.getStatus(error)).body(error.message())
+    );
+  }
+
+  @GetMapping("/products/{slug}")
+  public ResponseEntity<?> getProductDetail(@PathVariable String slug) {
+    return productRepository.getProductDetail(slug).match(
+        product -> ResponseEntity.ok(product),
+        error -> ResponseEntity.status(404).body(error.message())
     );
   }
 
@@ -62,10 +74,10 @@ public class CatalogController {
   public ResponseEntity<?> getRecommendedProducts(@RequestBody List<String> names) {
     return getRecommendedProductsUseCase.execute(
         new GetRecommendedProductsRequest(names.toArray(new String[0]))
-    ).match(
-        products -> ResponseEntity.ok(products),
-        error -> ResponseEntity.status(CatalogStatusMapper.getStatus(error)).body(error.message())
-    );
+        ).match(
+            products -> ResponseEntity.ok(products),
+            error -> ResponseEntity.status(CatalogStatusMapper.getStatus(error)).body(error.message())
+            );
   }
 
   @GetMapping("/artists")
@@ -73,7 +85,7 @@ public class CatalogController {
     return getArtistsUseCase.execute().match(
         artists -> ResponseEntity.ok(artists),
         error -> ResponseEntity.status(CatalogStatusMapper.getStatus(error)).body(error.message())
-    );
+        );
   }
 
   @GetMapping("/artists/{name}")
@@ -81,7 +93,7 @@ public class CatalogController {
     return getArtistUseCase.execute(name).match(
         artist -> ResponseEntity.ok(artist),
         error -> ResponseEntity.status(CatalogStatusMapper.getStatus(error)).body(error.message())
-    );
+        );
   }
 
   @GetMapping("/artists/{name}/products")
