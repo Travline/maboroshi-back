@@ -31,7 +31,6 @@ public class GetArtistUseCase {
     return Result.ok(new ArtistResponse(
         artist.getId().toString(),
         artist.getName(),
-        artist.getImage()
-    ));
+        artist.getImage()));
   }
 }

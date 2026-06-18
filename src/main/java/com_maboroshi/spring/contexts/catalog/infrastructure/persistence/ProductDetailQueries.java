@@ -25,7 +25,7 @@ public class ProductDetailQueries {
   public Result<DetailedProduct, RepositoryError> getProductDetail(String slug) {
     String sql = """
         SELECT p.id, p.product_name, p.artist, p.real_price, p.sale_price,
-               p.stock, p.slug, p.type, p.status,
+               p.stock, p.slug, p.type, p.status, p.spotify_id,
                a.image AS artist_image,
                ARRAY(SELECT url FROM product_images WHERE product_id = p.id) AS images,
                ARRAY(SELECT t.song FROM tracklists t WHERE t.product_id = p.id ORDER BY t.id) AS tracklist,
@@ -39,9 +39,12 @@ public class ProductDetailQueries {
         """;
     try {
       DetailedProduct product = jdbcTemplate.queryForObject(sql, (rs, rowNum) -> {
-        String[] images    = (String[]) rs.getArray("images").getArray();
+        String[] images = (String[]) rs.getArray("images").getArray();
         String[] tracklist = (String[]) rs.getArray("tracklist").getArray();
-        String[] genres    = (String[]) rs.getArray("genres").getArray();
+        String[] genres = (String[]) rs.getArray("genres").getArray();
+
+        String tokenSpotify = rs.getString("spotify_id");
+
         return new DetailedProduct(
             UUID.fromString(rs.getString("id")),
             rs.getString("product_name"),
@@ -56,9 +59,9 @@ public class ProductDetailQueries {
             false,
             rs.getString("type"),
             rs.getString("status"),
+            tokenSpotify,
             tracklist,
-            genres
-        );
+            genres);
       }, slug);
 
       if (product == null) {
