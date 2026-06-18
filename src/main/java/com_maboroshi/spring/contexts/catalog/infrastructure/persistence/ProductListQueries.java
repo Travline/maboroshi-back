@@ -27,7 +27,7 @@ public class ProductListQueries {
   public Result<BaseProduct[], RepositoryError> getLastProducts(int length) {
     String sql = """
         SELECT p.id, p.product_name, p.artist, p.real_price, p.sale_price,
-               p.stock, p.slug, p.type, p.status,
+               p.stock, p.slug, p.type, p.status, p.spotify_id,
                a.image AS artist_image,
                ARRAY(SELECT url FROM product_images WHERE product_id = p.id) AS images
         FROM products p
@@ -42,7 +42,7 @@ public class ProductListQueries {
   public Result<BaseProduct[], RepositoryError> getMostViewedProducts(int length) {
     String sql = """
         SELECT p.id, p.product_name, p.artist, p.real_price, p.sale_price,
-               p.stock, p.slug, p.type, p.status,
+               p.stock, p.slug, p.type, p.status, p.spotify_id,
                a.image AS artist_image,
                ARRAY(SELECT url FROM product_images WHERE product_id = p.id) AS images
         FROM products p
@@ -57,7 +57,7 @@ public class ProductListQueries {
   public Result<BaseProduct[], RepositoryError> getDiscountedProducts(int length) {
     String sql = """
         SELECT p.id, p.product_name, p.artist, p.real_price, p.sale_price,
-               p.stock, p.slug, p.type, p.status,
+               p.stock, p.slug, p.type, p.status, p.spotify_id,
                a.image AS artist_image,
                ARRAY(SELECT url FROM product_images WHERE product_id = p.id) AS images
         FROM products p
@@ -74,7 +74,7 @@ public class ProductListQueries {
   public Result<BaseProduct[], RepositoryError> getProductsByType(String type, int length) {
     String sql = """
         SELECT p.id, p.product_name, p.artist, p.real_price, p.sale_price,
-               p.stock, p.slug, p.type, p.status,
+               p.stock, p.slug, p.type, p.status, p.spotify_id,
                a.image AS artist_image,
                ARRAY(SELECT url FROM product_images WHERE product_id = p.id) AS images
         FROM products p
@@ -96,7 +96,7 @@ public class ProductListQueries {
   public Result<BaseProduct[], RepositoryError> getProductsByStatus(String status, int length) {
     String sql = """
         SELECT p.id, p.product_name, p.artist, p.real_price, p.sale_price,
-               p.stock, p.slug, p.type, p.status,
+               p.stock, p.slug, p.type, p.status, p.spotify_id,
                a.image AS artist_image,
                ARRAY(SELECT url FROM product_images WHERE product_id = p.id) AS images
         FROM products p

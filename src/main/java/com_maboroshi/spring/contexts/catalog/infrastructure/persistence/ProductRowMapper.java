@@ -27,7 +27,7 @@ public class ProductRowMapper implements RowMapper<BaseProduct> {
         false,
         false,
         rs.getString("type"),
-        rs.getString("status")
-    );
+        rs.getString("status"),
+        rs.getString("spotify_id"));
   }
 }

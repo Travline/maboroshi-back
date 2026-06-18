@@ -25,8 +25,8 @@ public class ProductCardMapper {
         product.isInWishlist(),
         product.isInCart(),
         product.getType(),
-        product.getStatus()
-    );
+        product.getStatus(),
+        product.getSpotifyId());
   }
 
   public static ProductCardResponse[] toResponseArray(BaseProduct[] products) {

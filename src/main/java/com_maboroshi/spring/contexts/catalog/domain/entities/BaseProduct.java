@@ -16,8 +16,11 @@ public class BaseProduct {
   private boolean inCart;
   private String type;
   private String status;
+  private String spotifyId;
 
-  public BaseProduct(UUID id, String productName, String artist, String artistImage, double realPrice, Double salePrice, int stock, String slug, String[] images, boolean inWishlist, boolean inCart, String type, String status) {
+  public BaseProduct(UUID id, String productName, String artist, String artistImage, double realPrice, Double salePrice,
+      int stock, String slug, String[] images, boolean inWishlist, boolean inCart, String type, String status,
+      String spotifyId) {
     this.id = id;
     this.productName = productName;
     this.artist = artist;
@@ -31,19 +34,62 @@ public class BaseProduct {
     this.inCart = inCart;
     this.type = type;
     this.status = status;
+    this.spotifyId = spotifyId;
   }
 
-  public UUID getId() { return id; }
-  public String getProductName() { return productName; }
-  public String getArtist() { return artist; }
-  public String getArtistImage() { return artistImage; }
-  public double getRealPrice() { return realPrice; }
-  public Double getSalePrice() { return salePrice; }
-  public int getStock() { return stock; }
-  public String getSlug() { return slug; }
-  public String[] getImages() { return images; }
-  public boolean isInWishlist() { return inWishlist; }
-  public boolean isInCart() { return inCart; }
-  public String getType() { return type; }
-  public String getStatus() { return status; }
+  public UUID getId() {
+    return id;
+  }
+
+  public String getProductName() {
+    return productName;
+  }
+
+  public String getArtist() {
+    return artist;
+  }
+
+  public String getArtistImage() {
+    return artistImage;
+  }
+
+  public double getRealPrice() {
+    return realPrice;
+  }
+
+  public Double getSalePrice() {
+    return salePrice;
+  }
+
+  public int getStock() {
+    return stock;
+  }
+
+  public String getSlug() {
+    return slug;
+  }
+
+  public String[] getImages() {
+    return images;
+  }
+
+  public boolean isInWishlist() {
+    return inWishlist;
+  }
+
+  public boolean isInCart() {
+    return inCart;
+  }
+
+  public String getType() {
+    return type;
+  }
+
+  public String getStatus() {
+    return status;
+  }
+
+  public String getSpotifyId() {
+    return spotifyId;
+  }
 }

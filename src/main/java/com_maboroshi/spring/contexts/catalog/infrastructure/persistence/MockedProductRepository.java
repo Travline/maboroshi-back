@@ -19,9 +19,18 @@ public class MockedProductRepository implements ProductRepository {
   private final List<DetailedProduct> products = new ArrayList<>();
   private final List<Artist> artists = new ArrayList<>();
 
-  public void add(DetailedProduct product) { products.add(product); }
-  public void addArtist(Artist artist) { artists.add(artist); }
-  public void clear() { products.clear(); artists.clear(); }
+  public void add(DetailedProduct product) {
+    products.add(product);
+  }
+
+  public void addArtist(Artist artist) {
+    artists.add(artist);
+  }
+
+  public void clear() {
+    products.clear();
+    artists.clear();
+  }
 
   @Override
   public Result<BaseProduct[], RepositoryError> getLastProducts(int length) {
@@ -106,7 +115,6 @@ public class MockedProductRepository implements ProductRepository {
     return new BaseProduct(
         p.getId(), p.getProductName(), p.getArtist(), p.getArtistImage(),
         p.getRealPrice(), p.getSalePrice(), p.getStock(), p.getSlug(),
-        p.getImages(), false, false, p.getType(), p.getStatus()
-    );
+        p.getImages(), false, false, p.getType(), p.getStatus(), p.getSpotifyId());
   }
 }
