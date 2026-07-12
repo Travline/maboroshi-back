@@ -17,4 +17,8 @@ public interface ProductRepository {
   Result<BaseProduct[], RepositoryError> getRecommendedProducts(String[] names);
   Result<Artist[], RepositoryError> getAllArtists();
   Result<Artist, RepositoryError> getArtistByName(String name);
+  Result<BaseProduct[], RepositoryError>getProductsByGenre(String genreName);
+  Result<Artist[],RepositoryError>getArtistsByGenre(String genreName);
+
+
 }

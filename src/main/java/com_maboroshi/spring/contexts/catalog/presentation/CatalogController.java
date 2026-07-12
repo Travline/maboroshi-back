@@ -23,6 +23,8 @@ public class CatalogController {
   private final GetArtistUseCase getArtistUseCase;
   private final GetProductsByArtistUseCase getProductsByArtistUseCase;
   private final ProductRepository productRepository;
+  private final GetGenreFilteredDataUseCase getGenreFilteredDataUseCase;
+
 
   public CatalogController(
       GetProductsUseCase getProductsUseCase,
@@ -31,7 +33,8 @@ public class CatalogController {
       GetArtistsUseCase getArtistsUseCase,
       GetArtistUseCase getArtistUseCase,
       GetProductsByArtistUseCase getProductsByArtistUseCase,
-      ProductRepository productRepository) {
+      ProductRepository productRepository,
+      GetGenreFilteredDataUseCase getGenreFilteredDataUseCase) {
     this.getProductsUseCase = getProductsUseCase;
     this.searchProductsUseCase = searchProductsUseCase;
     this.getRecommendedProductsUseCase = getRecommendedProductsUseCase;
@@ -39,6 +42,7 @@ public class CatalogController {
     this.getArtistUseCase = getArtistUseCase;
     this.getProductsByArtistUseCase = getProductsByArtistUseCase;
     this.productRepository = productRepository;
+    this.getGenreFilteredDataUseCase = getGenreFilteredDataUseCase;
   }
 
   @GetMapping("/products")
@@ -93,4 +97,11 @@ public class CatalogController {
         products -> ResponseEntity.ok(products),
         error -> ResponseEntity.status(CatalogStatusMapper.getStatus(error)).body(error.message()));
   }
+  @GetMapping("/genres/{genreName}")
+public ResponseEntity<?> getGenreFilteredData(@PathVariable String genreName) {
+  return getGenreFilteredDataUseCase.execute(genreName).match(
+      data -> ResponseEntity.ok(data),
+      error -> ResponseEntity.status(CatalogStatusMapper.getStatus(error)).body(error.message())
+  );
+}
 }

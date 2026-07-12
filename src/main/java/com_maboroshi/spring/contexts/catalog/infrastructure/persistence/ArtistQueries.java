@@ -77,7 +77,52 @@ public class ArtistQueries {
       List<BaseProduct> results = jdbcTemplate.query(sql, productRowMapper, name);
       return Result.ok(results.toArray(new BaseProduct[0]));
     } catch (DataAccessException e) {
-      appLogger.error("Database error fetching products by artist", e);
+      appLogger.error("Error", e);
+      return Result.fail(new ProductsCannotBeRetrieved(e.getMessage()));
+    }
+  }
+  public Result<Artist[],RepositoryError> getaArtistsByGenre(String genreName){
+      String sql = """
+      SELECT DISTINCT a.id, a.name, a.image
+      FROM artists a
+      JOIN products p ON p.artist_id = a.id
+      JOIN product_genres pg ON pg.product_id = p.id
+      JOIN genres g ON g.id = pg.genre_id
+      WHERE g.genre_name ILIKE ?
+      ORDER BY a.name ASC
+      """;   
+      try{
+      List<Artist>results=jdbcTemplate.query(sql,(rs,rowNum)->new Artist(
+        UUID.fromString(rs.getString("id")),
+        rs.getString("name"),
+        rs.getString("image")
+      ), genreName);
+      return Result.ok(results.toArray(new Artist[0]));
+          }catch (DataAccessException e){
+            appLogger.error("error",e);
+            return Result.fail(new ProductsCannotBeRetrieved(e.getMessage()));
+          }
+  }
+
+  public Result<Artist[], RepositoryError> getArtistsByGenre(String genreName) {
+    String sql = """
+        SELECT DISTINCT a.id, a.name, a.image
+        FROM artists a
+        JOIN products p ON p.artist_id = a.id
+        JOIN product_genres pg ON pg.product_id = p.id
+        JOIN genres g ON g.id = pg.genre_id
+        WHERE g.genre_name ILIKE ?
+        ORDER BY a.name ASC
+        """;
+    try {
+      List<Artist> results = jdbcTemplate.query(sql, (rs, rowNum) -> new Artist(
+          java.util.UUID.fromString(rs.getString("id")),
+          rs.getString("name"),
+          rs.getString("image")
+      ), genreName);
+      return Result.ok(results.toArray(new Artist[0]));
+    } catch (DataAccessException e) {
+      appLogger.error("Error", e);
       return Result.fail(new ProductsCannotBeRetrieved(e.getMessage()));
     }
   }

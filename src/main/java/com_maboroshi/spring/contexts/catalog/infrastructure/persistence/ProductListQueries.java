@@ -114,13 +114,36 @@ public class ProductListQueries {
       return Result.fail(new ProductsCannotBeRetrieved(e.getMessage()));
     }
   }
-
+  
   private Result<BaseProduct[], RepositoryError> executeListQuery(String sql, int length) {
     try {
       List<BaseProduct> results = jdbcTemplate.query(sql, rowMapper, length);
       return Result.ok(results.toArray(new BaseProduct[0]));
     } catch (DataAccessException e) {
       appLogger.error("Database error fetching products", e);
+      return Result.fail(new ProductsCannotBeRetrieved(e.getMessage()));
+    }
+  }
+  public Result<BaseProduct[],RepositoryError>getProductsByGenre(String genreName){
+     String sql = """
+      SELECT p.id, p.product_name, p.artist, p.real_price, p.sale_price,
+             p.stock, p.slug, p.type, p.status, p.spotify_id,
+             a.image AS artist_image,
+             ARRAY(SELECT url FROM product_images WHERE product_id = p.id) AS images
+      FROM products p
+      LEFT JOIN artists a ON a.id = p.artist_id
+      JOIN product_genres pg ON pg.product_id = p.id
+      JOIN genres g ON g.id = pg.genre_id
+      WHERE p.is_visible = true
+        AND g.genre_name ILIKE ?
+      ORDER BY p.id DESC
+      """;
+    try{
+      List<BaseProduct> results=jdbcTemplate.query(sql,rowMapper,genreName);
+      return Result.ok(results.toArray(new BaseProduct[0]));
+
+    }catch (DataAccessException e){
+      appLogger.error("Error",e);
       return Result.fail(new ProductsCannotBeRetrieved(e.getMessage()));
     }
   }

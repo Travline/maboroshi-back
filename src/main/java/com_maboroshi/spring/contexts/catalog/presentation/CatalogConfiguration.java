@@ -38,4 +38,9 @@ public class CatalogConfiguration {
   public GetProductsByArtistUseCase getProductsByArtistUseCase(ProductRepository productRepository, AppLogger appLogger) {
     return new GetProductsByArtistUseCase(productRepository, appLogger);
   }
+
+  @Bean
+  public GetGenreFilteredDataUseCase getGenreFilteredDataUseCase(ProductRepository productRepository) {
+    return new GetGenreFilteredDataUseCase(productRepository);
+  }
 }

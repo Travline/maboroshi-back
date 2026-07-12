@@ -117,4 +117,13 @@ public class MockedProductRepository implements ProductRepository {
         p.getRealPrice(), p.getSalePrice(), p.getStock(), p.getSlug(),
         p.getImages(), false, false, p.getType(), p.getStatus(), p.getSpotifyId());
   }
+    @Override
+  public Result<BaseProduct[], RepositoryError> getProductsByGenre(String genreName) {
+    return Result.ok(new BaseProduct[0]);
+  }
+
+  @Override
+  public Result<Artist[], RepositoryError> getArtistsByGenre(String genreName) {
+    return Result.ok(new Artist[0]);
+  }
 }

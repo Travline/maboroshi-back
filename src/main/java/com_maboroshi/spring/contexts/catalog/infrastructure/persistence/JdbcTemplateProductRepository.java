@@ -41,4 +41,6 @@ public class JdbcTemplateProductRepository implements ProductRepository {
   @Override public Result<Artist[], RepositoryError> getAllArtists() { return artistQueries.getAllArtists(); }
   @Override public Result<Artist, RepositoryError> getArtistByName(String name) { return artistQueries.getArtistByName(name); }
   @Override public Result<BaseProduct[], RepositoryError> getProductsByArtistName(String name) { return artistQueries.getProductsByArtistName(name); }
+  @Override public Result<BaseProduct[], RepositoryError> getProductsByGenre(String genreName) { return listQueries.getProductsByGenre(genreName); }
+  @Override public Result<Artist[], RepositoryError> getArtistsByGenre(String genreName) { return artistQueries.getArtistsByGenre(genreName); }
 }
