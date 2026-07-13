@@ -94,4 +94,37 @@ public class JdbcTemplateUserRepository implements UserRepository {
       return Result.fail(new UserNotFound(dataAccessException.getMessage()));
     }
   }
+
+   @Override
+  public Result<User, RepositoryError> findById(UUID userId) {
+    String sql = """
+        SELECT * FROM users WHERE id = ?
+        """;
+    
+    try {
+      User user = jdbcTemplate.queryForObject(sql, (rs, rowNum) -> {
+            try {
+              return new User(
+                  UUID.fromString(rs.getString("id")),
+                  rs.getString("username"),
+                  new UserMail(rs.getString("mail")),
+                  rs.getString("pwd"),
+                  rs.getString("phone"),
+                  rs.getBoolean("is_active")
+              );
+            } catch (InvalidMailException invalidMailException) {
+              return null;
+            }
+          },
+          userId);
+
+      if (user == null) {
+        return Result.fail(new UserNotFound("User not found by ID"));
+      }
+      return Result.ok(user);
+    } catch (DataAccessException dataAccessException) {
+      appLogger.error("Database error searching user by ID", dataAccessException);
+      return Result.fail(new UserNotFound(dataAccessException.getMessage()));
+    }
+  }
 }

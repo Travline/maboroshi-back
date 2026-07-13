@@ -9,4 +9,6 @@ public interface UserRepository {
   public Result<User, RepositoryError> save(User newUser);
 
   public Result<User, RepositoryError> findByMail(UserMail userMail);
+  
+  public Result<User, RepositoryError> findById(UUID userId);
 }
