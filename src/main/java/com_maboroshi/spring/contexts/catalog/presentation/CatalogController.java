@@ -91,8 +91,8 @@ public class CatalogController {
         error -> ResponseEntity.status(CatalogStatusMapper.getStatus(error)).body(error.message()));
   }
 
-  @GetMapping("/artists/{name}/products")
-  public ResponseEntity<?> getProductsByArtist(@PathVariable String name) {
+  @GetMapping("/artists/products")
+  public ResponseEntity<?> getProductsByArtist(@RequestParam(name = "name") String name) {
     return getProductsByArtistUseCase.execute(name).match(
         products -> ResponseEntity.ok(products),
         error -> ResponseEntity.status(CatalogStatusMapper.getStatus(error)).body(error.message()));
