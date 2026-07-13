@@ -64,7 +64,7 @@ public class ArtistQueries {
   public Result<BaseProduct[], RepositoryError> getProductsByArtistName(String name) {
     String sql = """
         SELECT p.id, p.product_name, p.artist, p.real_price, p.sale_price,
-               p.stock, p.slug, p.type, p.status,
+               p.stock, p.slug, p.type, p.status, p.spotify_id,
                a.image AS artist_image,
                ARRAY(SELECT url FROM product_images WHERE product_id = p.id) AS images
         FROM products p
