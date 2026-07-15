@@ -28,7 +28,7 @@ public class SessionCookie {
             .maxAge(30 * 60)
             .httpOnly(true)
             .secure(true)
-            .sameSite("Strict")
+            .sameSite("None")
             .build();
   }
 
